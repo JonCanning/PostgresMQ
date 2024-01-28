@@ -1,0 +1,17 @@
+build
+deploy
+*.log
+bin
+obj
+__*
+paket-files
+packages
+.ionide
+.fake
+.idea
+.DS_Store
+node_modules
+deadletters/**
+images
+scripts
+mysql

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PostgresMQ", "src\PostgresMQ.fsproj", "{CAE9925E-509A-4EDD-8A2C-17C2E28361F7}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PostgresMQ.Tests", "tests\PostgresMQ.Tests.fsproj", "{AAA50AD6-C8CD-483B-9922-BF0B249008EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAE9925E-509A-4EDD-8A2C-17C2E28361F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAE9925E-509A-4EDD-8A2C-17C2E28361F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAE9925E-509A-4EDD-8A2C-17C2E28361F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAE9925E-509A-4EDD-8A2C-17C2E28361F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAA50AD6-C8CD-483B-9922-BF0B249008EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAA50AD6-C8CD-483B-9922-BF0B249008EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAA50AD6-C8CD-483B-9922-BF0B249008EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAA50AD6-C8CD-483B-9922-BF0B249008EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

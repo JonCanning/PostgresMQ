@@ -1,0 +1,4 @@
+FSharp.Core
+Npgsql
+Dapper
+System.Text.Json
