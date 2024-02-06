@@ -127,10 +127,10 @@ type MessageQueue(connectionString: string, maxDeliveryCount: int, ?jsonSerializ
               partitionKey = @partitionKey 
               AND completed IS NULL
               AND deliveryCount < @maxDeliveryCount
+              AND (scheduledEnqueueTimeUtc IS NULL OR scheduledEnqueueTimeUtc <= @now)
             ORDER BY
-              created FOR
-            UPDATE
-              SKIP LOCKED
+              created ASC, scheduledEnqueueTimeUtc ASC
+            FOR UPDATE SKIP LOCKED
             LIMIT
               @messageCount
           ) RETURNING id, deliveryCount, partitionKey, body
@@ -141,6 +141,7 @@ type MessageQueue(connectionString: string, maxDeliveryCount: int, ?jsonSerializ
           sql,
           {| partitionKey = partitionKey
              maxDeliveryCount = maxDeliveryCount
+             now = DateTime.UtcNow
              messageCount = messageCount
              completed =
               if autoComplete then
@@ -191,7 +192,6 @@ type MessageQueue(connectionString: string, maxDeliveryCount: int, ?jsonSerializ
         UPDATE
           message
         SET
-          deliveryCount = deliveryCount + 1,
           scheduledEnqueueTimeUtc = @scheduledEnqueueTimeUtc,
           completed = NULL
         WHERE
@@ -217,7 +217,7 @@ type MessageQueue(connectionString: string, maxDeliveryCount: int, ?jsonSerializ
           "DELETE FROM message WHERE completed <= @completedBefore",
           {| completedBefore = completedBefore.UtcDateTime |}
         )
-      :> Task
+        :> Task
     }
     :> Task
 
@@ -281,4 +281,27 @@ type MessageQueue(connectionString: string, maxDeliveryCount: int, ?jsonSerializ
         match partitionKey with
         | Some partitionKey -> connection.ExecuteScalarAsync<int>(sql, {| partitionKey = partitionKey |})
         | _ -> connection.ExecuteScalarAsync<int> sql
+    }
+
+  member _.ScheduledMessageCount(?partitionKey: string) =
+    task {
+      use connection = connection ()
+
+      let sql =
+        "SELECT COUNT(*) FROM message WHERE completed IS NULL AND deliveryCount < @maxDeliveryCount AND scheduledEnqueueTimeUtc IS NOT NULL"
+
+      let sql =
+        match partitionKey with
+        | Some _ -> sql + " AND partitionKey = @partitionKey"
+        | _ -> sql
+
+      return!
+        match partitionKey with
+        | Some partitionKey ->
+          connection.ExecuteScalarAsync<int>(
+            sql,
+            {| maxDeliveryCount = maxDeliveryCount
+               partitionKey = partitionKey |}
+          )
+        | _ -> connection.ExecuteScalarAsync<int>(sql, {| maxDeliveryCount = maxDeliveryCount |})
     }

@@ -5,11 +5,10 @@ open PostgresMQ
 open Npgsql
 open Dapper
 
-let messageQueue () =
+let messageQueue maxDeliveryCount =
   let connectionString =
     "Host=localhost;Username=postgres;Password=postgres;Database=postgres"
 
-  let maxDeliveryCount = 1
   let jsonSerializerOptions = Json.options
 
   let messageQueue =

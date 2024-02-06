@@ -6,7 +6,7 @@ open System
 [<Tests>]
 let tests =
   test "Partitions" {
-    let messageQueue = messageQueue ()
+    let messageQueue = messageQueue 1
     let p1MessageId = Guid.NewGuid().ToString()
     let p1Message = {| name = "p1" |}
     let result = messageQueue.Enqueue(p1MessageId, p1Message, "p1").Result

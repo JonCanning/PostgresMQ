@@ -6,7 +6,7 @@ open System
 [<Tests>]
 let tests =
   test "AutoComplete" {
-    let messageQueue = messageQueue ()
+    let messageQueue = messageQueue 1
     let messageId = Guid.NewGuid().ToString()
     let event = {| name = "AutoComplete" |}
     let result = messageQueue.Enqueue(messageId, event).Result
